@@ -25,18 +25,20 @@ fieldContext.arc(300, 400, 50, 0, Math.PI * 2, false);
 fieldContext.lineWidth = 4;
 fieldContext.stroke();
 
-function Player(x, y, width, height) {
+function Player(x, y, width, height, speed) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
+  this.speed = speed;
 }
 
-function Computer(x, y, width, height) {
+function Computer(x, y, width, height, speed) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
+  this.speed = speed;
 }
 
 function Ball(x, y, radius) {
@@ -45,10 +47,31 @@ function Ball(x, y, radius) {
   this.radius = radius;
 }
 
-Player.prototype.render = function() {
-  fieldContext.fillStyle = "white";
-  fieldContext.fillRect(this.x, this.y, this.width, this.height);
-};
+Player.prototype = {
+  render: function() {
+    fieldContext.fillStyle = "white";
+    fieldContext.fillRect(this.x, this.y, this.width, this.height);
+  },
+  moveRight: function() {
+    fieldContext.fillStyle = fieldGradient;
+    fieldContext.fillRect(this.x, this.y, this.width, this.height);
+    var rightX = this.x + this.width
+    if (fieldCanvas.width - (this.x + this.width) <= this.speed) {
+        this.x = fieldCanvas.width - this.width;
+    } else {
+        this.x += this.speed;
+    }
+  },
+  moveLeft: function() {
+    fieldContext.fillStyle = fieldGradient;
+    fieldContext.fillRect(this.x, this.y, this.width, this.height);
+    if (this.x <= this.speed) {
+      this.x = 0;
+    } else {
+      this.x -= this.speed;
+    }
+  }
+}
 
 Computer.prototype.render = function() {
   fieldContext.fillStyle = "white";
@@ -63,12 +86,27 @@ Ball.prototype.render = function() {
 };
 
 
-var playerOne = new Player(260, 770, 80, 15);
-var computerOne = new Computer(260, 10, 80, 15);
+var playerOne = new Player(260, 770, 80, 15, 50);
+var computerOne = new Computer(260, 10, 80, 15, 50);
 var ball = new Ball(300, 400, 12);
 
-window.onload = function() {
+var animate = window.requestAnimationFrame || function(step) { window.setTimeout(step, 1000/60) };
+
+function step() {
   playerOne.render();
   computerOne.render();
   ball.render();
+  animate(step);
+}
+
+window.addEventListener("keydown", function(event) {
+  if (event.key == "ArrowLeft" || event.key == "a") {
+    playerOne.moveLeft();
+  } else if (event.key == "ArrowRight" || event.key == "d") {
+    playerOne.moveRight();
+  }
+});
+
+window.onload = function() {
+  step();
 };
