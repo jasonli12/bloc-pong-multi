@@ -50,7 +50,7 @@ function Computer(x, y, width, height, speed) {
   this.speed = speed;
 }
 
-function Ball(x, y, radius, speed, direction = Math.random() * Math.PI * 2, minSpeed = 10, maxSpeed = 30, speedChange = 2) {
+function Ball(x, y, radius, speed, direction = Math.random() * Math.PI * 2, minSpeed = 10, maxSpeed = 15, speedChange = 1) {
   this.x = x;
   this.y = y;
   this.radius = radius;
@@ -109,7 +109,9 @@ Ball.prototype = {
 
     // Make ball bounce off walls
     var wallContact = this.x >= fieldCanvas.width || this.x <= 0;
-    var paddleContact = (this.x + this.radius >= playerOne.x) && (this.x - this.radius <= playerOne.x + playerOne.width) && (this.y + this.radius >= playerOne.y) && (this.y - this.radius < playerOne.y + playerOne.height - 10);
+    var playerPaddleContact = (this.x + this.radius >= playerOne.x) && (this.x - this.radius <= playerOne.x + playerOne.width) && (this.y + this.radius >= playerOne.y) && (this.y + this.radius <= playerOne.y + playerOne.height);
+    var computerPaddleContact = (this.x + this.radius >= computerOne.x) && (this.x - this.radius <= computerOne.x + computerOne.width) && (this.y - this.radius >= computerOne.y) &&  (this.y - this.radius <= computerOne.y + computerOne.height);
+
     if (wallContact) {
       if (this.ballQuadrant == 'Q2') {
         this.x = fieldCanvas.width
@@ -124,25 +126,24 @@ Ball.prototype = {
         this.direction = Math.PI + (2 * Math.PI - this.direction);
     }
 
-
     // Make ball bounce off paddles
-  } else if (paddleContact) {
-    if (this.ballQuadrant == 'Q1'){
-      // speed change if holding down on direction key
-      if (keyDirection == 'right' && isPressed) {
-        if (this.speed - this.speedChange <= this.minSpeed) {
-          this.speed = this.minSpeed;
-        } else {
-          this.speed -= this.speedChange;
+    } else if (playerPaddleContact) {
+      if (this.ballQuadrant == 'Q1'){
+        // speed change if holding down on direction key
+        if (keyDirection == 'right' && isPressed) {
+          if (this.speed - this.speedChange <= this.minSpeed) {
+            this.speed = this.minSpeed;
+          } else {
+            this.speed -= this.speedChange;
+          }
+        } else if (keyDirection == 'left' && isPressed) {
+          if (this.speed + this.speedChange >= this.maxSpeed) {
+            this.speed = this.maxSpeed;
+          } else {
+            this.speed += this.speedChange;
+          }
         }
-      } else if (keyDirection == 'left' && isPressed) {
-        if (this.speed + this.speedChange >= this.maxSpeed) {
-          this.speed = this.maxSpeed;
-        } else {
-          this.speed += this.speedChange;
-        }
-      }
-      this.direction = 2 * Math.PI - this.direction;
+        this.direction = 2 * Math.PI - this.direction;
     } else if (this.ballQuadrant == 'Q2') {
       // speed change if holding down on direction key
       if (keyDirection == 'left' && isPressed) {
@@ -159,6 +160,12 @@ Ball.prototype = {
         }
       }
       this.direction = Math.PI + (Math.PI - this.direction);
+    }
+  } else if (computerPaddleContact) {
+    if (this.ballQuadrant == 'Q3') {
+      this.direction = Math.PI - (this.direction - Math.PI);
+    } else if (this.ballQuadrant == 'Q4') {
+      this.direction = 2 * Math.PI - this.direction;
     }
   } else if (this.y <= 0 && (this.ballQuadrant == 'Q3')) {
     this.direction = Math.PI - (this.direction - Math.PI);
@@ -199,6 +206,7 @@ function step() {
   playerOne.render();
   computerOne.render();
   ball.render();
+  console.log(ball.y, playerOne.y, playerOne.y + 5, ball.x, playerOne.x, playerOne.x + playerOne.width);
   animate(step);
 }
 
