@@ -34,20 +34,22 @@ Field.prototype.render = function() {
   fieldContext.stroke();
 };
 
-function Player(x, y, width, height, speed) {
+function Player(x, y, width, height, speed, points = 0) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
   this.speed = speed;
+  this.points = points;
 }
 
-function Computer(x, y, width, height, speed) {
+function Computer(x, y, width, height, speed, points = 0) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
   this.speed = speed;
+  this.points = points;
 }
 
 function Ball(x, y, radius, speed, direction = Math.random() * 2 * Math.PI, minSpeed = 10, maxSpeed = 30, speedChange = 2) {
@@ -58,7 +60,9 @@ function Ball(x, y, radius, speed, direction = Math.random() * 2 * Math.PI, minS
   this.direction = direction;
   this.minSpeed = minSpeed;
   this.maxSpeed = maxSpeed;
-  this.speedChange = speedChange
+  this.speedChange = speedChange;
+  this.hitCounter = 0;
+  this.lastHit = 'none';
 }
 
 Player.prototype = {
@@ -152,8 +156,8 @@ Ball.prototype = {
 
     // Make ball bounce off paddles
     } else if (playerPaddleContact) {
-      ball.hitCounter++;
-      ball.lastHit = 'player';
+      this.hitCounter++;
+      this.lastHit = 'player';
       if (this.ballQuadrant == 'Q1'){
         // speed change if holding down on direction key
         if (keyDirection == 'right' && isPressed) {
@@ -196,8 +200,8 @@ Ball.prototype = {
       }
     }
   } else if (computerPaddleContact) {
-    ball.hitCounter++;
-    ball.lastHit = 'computer';
+    this.hitCounter++;
+    this.lastHit = 'computer';
     if (gameplay == 'random') {
       this.direction = Math.random() * Math.PI;
     } else {
@@ -218,9 +222,7 @@ updateBallQuadrant: function() {
   } else {
     this.ballQuadrant = 'Q4'
   }
-},
-hitCounter: 0,
-lastHit: 'none'
+}
 };
 
 //default playerOne parameters
@@ -231,7 +233,7 @@ var playerOneSpeed = 10;
 //default computer parameters
 var computerOneX = 260;
 var computerOneY = 10;
-var computerOneSpeed = 10;
+var computerOneSpeed = 8;
 
 //default paddle parameters
 var stdPaddleWidth = 80;
@@ -248,21 +250,24 @@ var field = new Field(fieldCanvas);
 var playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeight, playerOneSpeed);
 var computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed);
 var ball = new Ball(ballX, ballY, ballRadius, ballSpeed);
-
+var playerScore = document.getElementById('player-score');
+var computerScore = document.getElementById('computer-score');
 
 var animate = window.requestAnimationFrame || function(step) { window.setTimeout(step, 1000/60) };
 var cancelAnimate = window.cancelAnimationFrame;
 var myReq;
 var keyDirection;
 var isPressed;
-var gameplay = 'random';
+var gameplay = 'normal';
+
 
 function step() {
   field.render();
   playerOne.render();
   computerOne.render();
   ball.render();
-  if (ball.y + ball.radius < -10 || ball.y - ball.radius > fieldCanvas.height + 10) {
+  console.log(playerOne.points, computerOne.points);
+  if (ball.y + ball.radius < -ball.speed + 5 || ball.y - ball.radius > fieldCanvas.height + ball.speed -5 ) {
     cancelAnimate(myReq);
     return newGame();
   }
@@ -270,8 +275,15 @@ function step() {
 }
 
 function newGame() {
-  playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeight, playerOneSpeed);
-  computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed);
+  if (ball.y + ball.radius < 0) {
+    playerOne.points++;
+    playerScore.innerHTML = playerOne.points;
+  } else {
+    computerOne.points++;
+    computerScore.innerHTML = computerOne.points;
+  }
+  playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeight, playerOneSpeed, playerOne.points);
+  computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed, computerOne.points);
   ball = new Ball(ballX, ballY, ballRadius, ballSpeed);
   step();
 }
@@ -291,5 +303,7 @@ window.addEventListener("keyup", function(event) {
 })
 
 window.onload = function() {
+  playerScore.innerHTML = 0;
+  computerScore.innerHTML = 0;
   step();
 };

@@ -3,11 +3,21 @@
   <head>
     <title>Bloc Pong</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
   </head>
   <body>
-    <h1>Bloc Pong</h1>
+    <div id="computer">
+        <h2>COMPUTER</h2>
+        <div id="computer-score"></div>
+    </div>
     <canvas id="field" width="600" height="800"></canvas>
+    <div id="player">
+      <h2>PLAYER</h2>
+      <div id="player-score"></div>
+    </div>
+    <div id="bloc">BLOC</div>
+    <div id="pong">PONG</div>
     <script src="scripts/app.js"></script>
   </body>
 </html>
