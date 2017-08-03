@@ -152,6 +152,8 @@ Ball.prototype = {
 
     // Make ball bounce off paddles
     } else if (playerPaddleContact) {
+      ball.hitCounter++;
+      ball.lastHit = 'player';
       if (this.ballQuadrant == 'Q1'){
         // speed change if holding down on direction key
         if (keyDirection == 'right' && isPressed) {
@@ -194,6 +196,8 @@ Ball.prototype = {
       }
     }
   } else if (computerPaddleContact) {
+    ball.hitCounter++;
+    ball.lastHit = 'computer';
     if (gameplay == 'random') {
       this.direction = Math.random() * Math.PI;
     } else {
@@ -214,7 +218,10 @@ updateBallQuadrant: function() {
   } else {
     this.ballQuadrant = 'Q4'
   }
-}};
+},
+hitCounter: 0,
+lastHit: 'none'
+};
 
 //default playerOne parameters
 var playerOneX = 260;
