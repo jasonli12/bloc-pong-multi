@@ -295,7 +295,7 @@ function newGame() {
     } else {
       gameover.style.background = 'red';
       gameoverMessage.innerHTML = 'GAME OVER!!! YOU LOST!!!'
-      newgameMessage.innerHTML = 'For rematch, hit refresh!'
+      newgameMessage.innerHTML = 'For a rematch, hit refresh!'
     }
     gameover.style.opacity = 1;
     playerOne.points = 0;
