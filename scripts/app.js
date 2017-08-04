@@ -251,6 +251,7 @@ var playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeig
 var computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed);
 var ball = new Ball(ballX, ballY, ballRadius, ballSpeed);
 var playerScore = document.getElementById('player-score');
+var playerScoreHidden = document.getElementById('player-score-hidden');
 var computerScore = document.getElementById('computer-score');
 
 var animate = window.requestAnimationFrame || function(step) { window.setTimeout(step, 1000/60) };
@@ -259,14 +260,16 @@ var myReq;
 var keyDirection;
 var isPressed;
 var gameplay = 'normal';
-
+var winningPoints = 11;
+var gameover = document.getElementById('gameover');
+var gameoverMessage = document.getElementById('gameover-message');
+var newgameMessage = document.getElementById('newgame-message');
 
 function step() {
   field.render();
   playerOne.render();
   computerOne.render();
   ball.render();
-  console.log(playerOne.points, computerOne.points);
   if (ball.y + ball.radius < -ball.speed + 5 || ball.y - ball.radius > fieldCanvas.height + ball.speed -5 ) {
     cancelAnimate(myReq);
     return newGame();
@@ -278,14 +281,34 @@ function newGame() {
   if (ball.y + ball.radius < 0) {
     playerOne.points++;
     playerScore.innerHTML = playerOne.points;
+    playerScoreHidden.innerHTML = playerOne.points;
   } else {
     computerOne.points++;
     computerScore.innerHTML = computerOne.points;
   }
-  playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeight, playerOneSpeed, playerOne.points);
-  computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed, computerOne.points);
-  ball = new Ball(ballX, ballY, ballRadius, ballSpeed);
-  step();
+
+  if (playerOne.points == winningPoints || computerOne.points == winningPoints) {
+    if (playerOne.points > computerOne.points) {
+      gameoverMessage.innerHTML = 'GAME SET!!! YOU WON!!!'
+      newgameMessage.innerHTML = 'To play again, hit refresh!'
+      gameover.style.background = 'blue';
+    } else {
+      gameover.style.background = 'red';
+      gameoverMessage.innerHTML = 'GAME OVER!!! YOU LOST!!!'
+      newgameMessage.innerHTML = 'For rematch, hit refresh!'
+    }
+    gameover.style.opacity = 1;
+    playerOne.points = 0;
+    computerOne.points = 0;
+    playerScore.innerHTML = playerOne.points;
+    playerScoreHidden.innerHTML = playerOne.points;
+    computerScore.innerHTML = computerOne.points;
+  } else {
+    playerOne = new Player(playerOneX, playerOneY, stdPaddleWidth, stdPaddleHeight, playerOneSpeed, playerOne.points);
+    computerOne = new Computer(computerOneX, computerOneY, stdPaddleWidth, stdPaddleHeight, computerOneSpeed, computerOne.points);
+    ball = new Ball(ballX, ballY, ballRadius, ballSpeed);
+    step();
+  }
 }
 
 window.addEventListener("keydown", function(event) {
@@ -304,6 +327,7 @@ window.addEventListener("keyup", function(event) {
 
 window.onload = function() {
   playerScore.innerHTML = 0;
+  playerScoreHidden.innerHTML = 0;
   computerScore.innerHTML = 0;
   step();
 };

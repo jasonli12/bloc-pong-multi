@@ -7,17 +7,22 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css">
   </head>
   <body>
-    <div id="computer">
-        <h2>COMPUTER</h2>
-        <div id="computer-score"></div>
+    <div id="left-score">
+      <h2 id="computer">COMPUTER</h2>
+      <div id="computer-score"></div>
+      <h2 id="player-hidden">PLAYER</h2>
+      <div id="player-score-hidden"></div>
     </div>
     <canvas id="field" width="600" height="800"></canvas>
-    <div id="player">
-      <h2>PLAYER</h2>
+    <div id="right-score">
+      <h2 id="player">PLAYER</h2>
       <div id="player-score"></div>
+      <h2 id="game-title">BLOC PONG</h2>
     </div>
-    <div id="bloc">BLOC</div>
-    <div id="pong">PONG</div>
+    <div id="gameover">
+      <div id="gameover-message"></div>
+      <div id="newgame-message"></div>
+    </div>
     <script src="scripts/app.js"></script>
   </body>
 </html>

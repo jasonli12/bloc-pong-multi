@@ -3,24 +3,6 @@ body {
   margin-bottom: 42px;
 }
 
-div#bloc, div#pong {
-  color: #09e54b;
-  float: left;
-  font-size: 60px;
-  font-weight: bold;
-  font-family: 'Kaushan Script', cursive;
-  margin-top: 30px;
-  margin-left: 100px;
-  width: 200px;
-  /*border-style: solid;
-  border-color: white;*/
-}
-
-div#pong {
-  margin-top: 0px;
-  margin-left: 225px;
-}
-
 #field {
   display: block;
   float: left;
@@ -30,41 +12,87 @@ div#pong {
   border-color: white;
 }
 
-#player {
+#left-score, #right-score {
+  float: left;
+  width: 450px;
   color: white;
   text-align: center;
-  width: 450px;
-  float: left;
+  margin-top: 75px;
+  font-family: 'Kaushan Script', cursive;
+}
+
+#right-score {
   margin-left: 10px;
-  margin-top: 125px;
-  margin-bottom: 100px;
 }
 
-#player h2 {
-  font-size: 60px;
-  font-family: 'Kaushan Script', cursive;
-}
-
-#player #player-score {
-  font-size: 90px;
-  font-family: 'Kaushan Script', cursive;
-}
-
-#computer {
-  float: left;
-  width: 450px;
-  color: white;
-  text-align: center;
+#left-score {
   margin-right: 10px;
+}
+
+#right-score #player, #left-score #computer, #left-score #player-hidden {
+  font-size: 60px;
+}
+
+#right-score #player-score, #left-score #computer-score, #left-score #player-score-hidden {
+  font-size: 90px;
+}
+
+#left-score #player-hidden {
   margin-top: 125px;
 }
 
-#computer h2 {
+#player-hidden, #player-score-hidden {
+  opacity: 0;
+}
+
+#game-title {
+  color: #09e54b;
   font-size: 60px;
+  margin-top: 250px;
+  font-weight: bold;
+  font-family: 'Kaushan Script';
+}
+
+#gameover {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-color: white;
+  /*font-size: 75px;*/
+  color: white;
+  height: 200px;
+  text-align: center;
+  vertical-align: middle;
+  /*line-height: 100px;*/
+  opacity: 0;
+}
+
+#gameover #gameover-message {
+  font-size: 75px;
+  line-height: 150px;
   font-family: 'Kaushan Script', cursive;
 }
 
-#computer #computer-score {
-  font-size: 90px;
-  font-family: 'Kaushan Script', cursive;
+#gameover #newgame-message {
+  font-size: 25px;
+  line-height: 50px;
 }
+
+@media (max-width: 1550px) {
+  #right-score, #game-title {
+    opacity: 0;
+  }
+
+  #right-score #player, #right-score #player-score, #game-title {
+    font-size: 1px;
+    margin: 0;
+  }
+  #player-hidden, #player-score-hidden {
+    opacity: 1;
+  }
+  #left-score {
+    margin-top: 40px;
+  }
+}
+
+#gameover
