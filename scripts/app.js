@@ -392,6 +392,7 @@ function start() {
     });
     step();
   } else {
+    playerTwo = new Player(defaults.playerTwoX, defaults.playerTwoY, defaults.stdPaddleWidth, defaults.stdPaddleHeight, defaults.playerSpeed);
     gameRef.on('child_changed', function() {
       playerTwoRenderClient();
     });
