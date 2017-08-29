@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css">
   </head>
   <body>
+    <button onclick="writeNewGame()">Create New Game</button>
+    <button onclick="playerId=1">Player 1</button>
+    <button onclick="playerId=2">Player 2</button>
+    <button onclick="start()">Start!</button>
     <div id="left-score">
       <h2 id="computer">COMPUTER</h2>
       <div id="computer-score"></div>
@@ -23,6 +27,20 @@
       <div id="gameover-message"></div>
       <div id="newgame-message"></div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAjLZvov9t1UwD9ucFTGfBuJm35qiC3BW0",
+        authDomain: "blocpong-74dcc.firebaseapp.com",
+        databaseURL: "https://blocpong-74dcc.firebaseio.com",
+        projectId: "blocpong-74dcc",
+        storageBucket: "blocpong-74dcc.appspot.com",
+        messagingSenderId: "721059679725"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/database.js"></script>
   </body>
 </html>
