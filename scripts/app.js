@@ -43,15 +43,6 @@ function Player(x, y, width, height, speed, points = 0) {
   this.points = points;
 }
 
-// function Computer(x, y, width, height, speed, points = 0) {
-//   this.x = x;
-//   this.y = y;
-//   this.width = width;
-//   this.height = height;
-//   this.speed = speed;
-//   this.points = points;
-// }
-
 function Ball(x, y, radius, speed, direction = Math.random() * 2 * Math.PI, minSpeed = 10, maxSpeed = 30, speedChange = 2) {
   this.x = x;
   this.y = y;
@@ -201,27 +192,6 @@ updateBallQuadrant: function() {
 }
 };
 
-//default playerOne parameters
-// var playerOneX = 260;
-// var playerOneY = 770;
-// var playerOneSpeed = 10;
-
-// //default computer parameters
-// var computerOneX = 260;
-// var computerOneY = 10;
-// var computerOneSpeed = 8;
-//
-// //default paddle parameters
-// var stdPaddleWidth = 80;
-// var stdPaddleHeight = 15;
-
-//default ball parameters
-// var startingBallX = 300;
-// var startingBallY = 400;
-// var ballRadius = 12;
-// var startingBallSpeed = 10;
-
-
 var field = new Field(fieldCanvas);
 var playerScore = document.getElementById('player-score');
 var playerScoreHidden = document.getElementById('player-score-hidden');
@@ -253,8 +223,6 @@ function step() {
   updates['/games/' + 1 + '/playerTwo/points'] = playerTwo.points;
 
   firebase.database().ref().update(updates);
-
-  // console.log(ball.x, ball.y);
   if (ball.y + ball.radius < -ball.speed + 5 || ball.y - ball.radius > fieldCanvas.height + ball.speed -5 ) {
     return newGame();
   }
@@ -288,6 +256,7 @@ function playerTwoRenderClient() {
   field.render();
   let playerOneRef = firebase.database().ref('games/' + 1 + '/playerOne');
   let ballRef = firebase.database().ref('games/' + 1 + '/ball');
+  let playerTwoRef = firebase.database().ref('games/' + 1 + '/playerTwo');
 
   playerOneRef.once('value', function(snapshot) {
     playerOnePos.x = snapshot.val().x;
@@ -309,8 +278,17 @@ function playerTwoRenderClient() {
     fieldContext.fillStyle = "#72ff00";
     fieldContext.fill();
   });
-}
 
+  playerTwoRef.once('value', function(snapshot) {
+    playerTwoPos.x = snapshot.val().x;
+    playerTwoPos.y = snapshot.val().y;
+    playerTwoPos.width = snapshot.val().width;
+    playerTwoPos.height = snapshot.val().height;
+    let fieldContext = field.fieldContext;
+    fieldContext.fillStyle = "white";
+    fieldContext.fillRect(playerTwoPos.x, playerTwoPos.y, playerTwoPos.width, playerTwoPos.height);
+  });
+}
 
 function newGame() {
   if (ball.y + ball.radius < 0) {
@@ -379,6 +357,5 @@ function start() {
       playerTwoRenderClient();
     });
     stepTwo();
-
   }
 };
