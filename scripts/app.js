@@ -262,7 +262,6 @@ function step() {
 }
 
 function stepTwo() {
-    field.render();
     playerTwo.render(); //-> need to test )
     var updates = {};
     updates['/games/' + 1 + '/playerTwo/x'] = playerTwo.x;
