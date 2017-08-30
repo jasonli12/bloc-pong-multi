@@ -262,7 +262,6 @@ function step() {
 }
 
 function stepTwo() {
-    playerTwoRenderClient();
     playerTwo.render();
     var updates = {};
     updates['/games/' + 1 + '/playerTwo/x'] = playerTwo.x;
@@ -270,13 +269,11 @@ function stepTwo() {
     animate(stepTwo);
 }
 
-
 function playerOneRenderClient() {
 
   let playerTwoRef = firebase.database().ref('games/' + 1 + '/playerTwo');
 
   playerTwoRef.once('value', function(snapshot) {
-    // console.log(snapshot.val().x, snapshot.val().y, snapshot.val().width, snapshot.val().height);
     playerTwoPos.x = snapshot.val().x;
     playerTwoPos.y = snapshot.val().y;
     playerTwoPos.width = snapshot.val().width;
@@ -314,8 +311,6 @@ function playerTwoRenderClient() {
   });
 }
 
-
-// -----------------------------------------------------
 
 function newGame() {
   if (ball.y + ball.radius < 0) {
@@ -380,6 +375,9 @@ function start() {
     step();
   } else {
     playerTwo = new Player(defaults.playerTwoX, defaults.playerTwoY, defaults.stdPaddleWidth, defaults.stdPaddleHeight, defaults.playerSpeed);
+    gameRef.on('child_changed', function() {
+      playerTwoRenderClient();
+    });
     stepTwo();
 
   }
