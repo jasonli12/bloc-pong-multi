@@ -262,14 +262,13 @@ function step() {
 }
 
 function stepTwo() {
-    playerTwo.render(); //-> need to test )
+    playerTwoRenderClient();
+    playerTwo.render();
     var updates = {};
     updates['/games/' + 1 + '/playerTwo/x'] = playerTwo.x;
     firebase.database().ref().update(updates);
     animate(stepTwo);
 }
-//Render player two
-
 
 
 function playerOneRenderClient() {
@@ -292,7 +291,6 @@ function playerTwoRenderClient() {
   field.render();
   let playerOneRef = firebase.database().ref('games/' + 1 + '/playerOne');
   let ballRef = firebase.database().ref('games/' + 1 + '/ball');
-  let playerTwoRef = firebase.database().ref('games/' + 1 + '/playerTwo');
 
   playerOneRef.once('value', function(snapshot) {
     playerOnePos.x = snapshot.val().x;
@@ -313,16 +311,6 @@ function playerTwoRenderClient() {
     fieldContext.arc(ballPos.x, ballPos.y, ballPos.r, 0, Math.PI * 2, false);
     fieldContext.fillStyle = "#72ff00";
     fieldContext.fill();
-  });
-
-  playerTwoRef.once('value', function(snapshot) {
-    playerTwoPos.x = snapshot.val().x;
-    playerTwoPos.y = snapshot.val().y;
-    playerTwoPos.width = snapshot.val().width;
-    playerTwoPos.height = snapshot.val().height;
-    let fieldContext = field.fieldContext;
-    fieldContext.fillStyle = "white";
-    fieldContext.fillRect(playerTwoPos.x, playerTwoPos.y, playerTwoPos.width, playerTwoPos.height);
   });
 }
 
@@ -392,9 +380,6 @@ function start() {
     step();
   } else {
     playerTwo = new Player(defaults.playerTwoX, defaults.playerTwoY, defaults.stdPaddleWidth, defaults.stdPaddleHeight, defaults.playerSpeed);
-    gameRef.on('child_changed', function() {
-      playerTwoRenderClient();
-    });
     stepTwo();
 
   }
