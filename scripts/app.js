@@ -193,15 +193,15 @@ updateBallQuadrant: function() {
 };
 
 var field = new Field(fieldCanvas);
-var playerScore = document.getElementById('player-score');
-var playerScoreHidden = document.getElementById('player-score-hidden');
-var playerTwoScore = document.getElementById('computer-score');
+var playerOneScore = document.getElementById('playerOne-score');
+var playerTwoScoreHidden = document.getElementById('playerTwo-score-hidden');
+var playerTwoScore = document.getElementById('playerTwo-score');
 
 var animate = window.requestAnimationFrame || function(step) { window.setTimeout(step, 1000/60) };
 var keyDirection;
 var isPressed;
 var gameplay = 'normal';
-var winningPoints = 11;
+var winningPoints = 3;
 var gameover = document.getElementById('gameover');
 var gameoverMessage = document.getElementById('gameover-message');
 var newgameMessage = document.getElementById('newgame-message');
@@ -293,12 +293,12 @@ function playerTwoRenderClient() {
 function newGame() {
   if (ball.y + ball.radius < 0) {
     playerOne.points++;
-    playerScore.innerHTML = playerOne.points;
-    playerScoreHidden.innerHTML = playerOne.points;
+    playerOneScore.innerHTML = playerOne.points;
   }
   else {
     playerTwo.points++;
     playerTwoScore.innerHTML = playerTwo.points;
+    playerTwoScoreHidden.innerHTML = playerTwo.points;
   }
 
   if (playerOne.points == winningPoints || playerTwo.points == winningPoints) {
@@ -314,8 +314,8 @@ function newGame() {
     gameover.style.opacity = 1;
     playerOne.points = 0;
     playerTwo.points = 0;
-    playerScore.innerHTML = playerOne.points;
-    playerScoreHidden.innerHTML = playerOne.points;
+    playerOneScore.innerHTML = playerOne.points;
+    playerTwoScoreHidden.innerHTML = playerTwo.points;
     playerTwoScore.innerHTML = playerTwo.points;
   } else {
     writeNewGame(playerOne.points, playerTwo.points)
@@ -341,8 +341,8 @@ window.addEventListener("keyup", function(event) {
 var gameRef = firebase.database().ref('games/' + 1)
 
 function start() {
-  playerScore.innerHTML = 0;
-  playerScoreHidden.innerHTML = 0;
+  playerOneScore.innerHTML = 0;
+  playerTwoScoreHidden.innerHTML = 0;
   playerTwoScore.innerHTML = 0;
 
   if (playerId == 1){

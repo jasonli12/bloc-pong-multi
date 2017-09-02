@@ -29,19 +29,19 @@ body {
   margin-right: 10px;
 }
 
-#right-score #player, #left-score #computer, #left-score #player-hidden {
+#right-score #playerTwo, #left-score #playerOne, #left-score #playerTwo-hidden {
   font-size: 60px;
 }
 
-#right-score #player-score, #left-score #computer-score, #left-score #player-score-hidden {
+#right-score #playerTwo-score, #left-score #playerOne-score, #left-score #playerTwo-score-hidden {
   font-size: 90px;
 }
 
-#left-score #player-hidden {
+#left-score #playerTwo-hidden {
   margin-top: 125px;
 }
 
-#player-hidden, #player-score-hidden {
+#playerTwo-hidden, #playerTwo-score-hidden {
   opacity: 0;
 }
 
@@ -81,11 +81,11 @@ body {
     opacity: 0;
   }
 
-  #right-score #player, #right-score #player-score, #game-title {
+  #right-score #playerTwo, #right-score #playerTwo-score, #game-title {
     font-size: 1px;
     margin: 0;
   }
-  #player-hidden, #player-score-hidden {
+  #playerTwo-hidden, #playerTwo-score-hidden {
     opacity: 1;
   }
   #left-score {
