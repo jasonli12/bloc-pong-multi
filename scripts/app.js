@@ -201,7 +201,7 @@ var animate = window.requestAnimationFrame || function(step) { window.setTimeout
 var keyDirection;
 var isPressed;
 var gameplay = 'normal';
-var winningPoints = 11;
+var winningPoints = 5;
 var gameover = document.getElementById('gameover');
 var gameoverMessage = document.getElementById('gameover-message');
 var newgameMessage = document.getElementById('newgame-message');
