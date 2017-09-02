@@ -201,7 +201,7 @@ var animate = window.requestAnimationFrame || function(step) { window.setTimeout
 var keyDirection;
 var isPressed;
 var gameplay = 'normal';
-var winningPoints = 3;
+var winningPoints = 11;
 var gameover = document.getElementById('gameover');
 var gameoverMessage = document.getElementById('gameover-message');
 var newgameMessage = document.getElementById('newgame-message');
@@ -266,6 +266,16 @@ function playerTwoRenderClient() {
     let fieldContext = field.fieldContext;
     fieldContext.fillStyle = "white";
     fieldContext.fillRect(playerOnePos.x, playerOnePos.y, playerOnePos.width, playerOnePos.height);
+    playerOneScore.innerHTML = snapshot.val().points;
+    if (snapshot.val().points == winningPoints) {
+      gameoverMessage.innerHTML = 'GAME SET!!! PLAYER ONE WINS!!!'
+      newgameMessage.innerHTML = 'For a rematch, hit refresh!'
+      gameover.style.background = 'red';
+      gameover.style.opacity = 1;
+      playerOneScore.innerHTML = 0;
+      playerTwoScoreHidden.innerHTML = 0;
+      playerTwoScore.innerHTML = 0;
+    }
   });
 
   ballRef.once('value', function(snapshot) {
@@ -287,6 +297,17 @@ function playerTwoRenderClient() {
     let fieldContext = field.fieldContext;
     fieldContext.fillStyle = "white";
     fieldContext.fillRect(playerTwoPos.x, playerTwoPos.y, playerTwoPos.width, playerTwoPos.height);
+    playerTwoScore.innerHTML = snapshot.val().points;
+    playerTwoScoreHidden.innerHTML = snapshot.val().points;
+    if (snapshot.val().points == winningPoints) {
+      gameoverMessage.innerHTML = 'GAME SET!!! PLAYER TWO WINS!!!'
+      newgameMessage.innerHTML = 'To play again, hit refresh!'
+      gameover.style.background = 'blue';
+      gameover.style.opacity = 1;
+      playerOneScore.innerHTML = 0;
+      playerTwoScoreHidden.innerHTML = 0;
+      playerTwoScore.innerHTML = 0;
+    }
   });
 }
 
