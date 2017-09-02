@@ -332,6 +332,12 @@ function newGame() {
       gameoverMessage.innerHTML = 'GAME SET!!! PLAYER TWO WINS!!!'
       newgameMessage.innerHTML = 'For a rematch, hit refresh!'
     }
+
+    let updates = {};
+    updates['/games/' + 1 + '/playerOne/points'] = playerOne.points;
+    updates['/games/' + 1 + '/playerTwo/points'] = playerTwo.points;
+    firebase.database().ref().update(updates);
+
     gameover.style.opacity = 1;
     playerOne.points = 0;
     playerTwo.points = 0;
